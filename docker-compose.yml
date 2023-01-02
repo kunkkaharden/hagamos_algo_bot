@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  postgres: 
+      container_name: pole_db
+      image: postgres:15.1-alpine3.16
+      restart: always
+      ports:
+        - "${EXPOSE_DB_PORT}:5432"
+      environment:
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+        POSTGRES_DB: ${DB_NAME}
+      volumes:
+        - postgres-data:/var/lib/postgresql/data
+  app:
+    depends_on:
+      db:
+       condition: service_started 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+volumes:
