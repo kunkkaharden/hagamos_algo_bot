@@ -1,4 +1,4 @@
-import { send_log } from "src/utils/error_log";
+import { send_log } from "./../utils/error_log";
 import { Repository } from "./db.repository";
 import { Config, Persona, Pole, Registro } from "./entities";
 
