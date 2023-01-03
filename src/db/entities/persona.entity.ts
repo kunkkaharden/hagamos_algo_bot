@@ -9,7 +9,7 @@ export class Persona {
     @Column("text")
     nombre_persona: string;
 
-    @Column("integer")
+    @Column("float")
     id_persona: number;
 
     @OneToMany(() => Pole, (pole) => pole.persona)

@@ -1,24 +1,24 @@
 import { getText, isGroup, sendMessage } from "./../utils/utils";
 import { Context } from "telegraf";
 import { PoleService } from "./pole.service";
-const poleService = PoleService.instance;
-
 
 const pole = (ctx: Context) => {
     if (!isGroup(ctx)) {
         soloGrupos(ctx);
     } else {
-        sendMessage(ctx, poleService.pole(ctx))
+        PoleService.instance.pole(ctx);
+    
     }
+
 }
 const polele = (ctx: any) => {
     sendMessage(ctx, "Felicidades, has ganado la polele, es inútil, pero es la polele!!!");
 }
 const poleRank = (ctx: any) => {
-    if (isGroup(ctx)) {
+    if (!isGroup(ctx)) {
         soloGrupos(ctx);
     } else {
-        sendMessage(ctx, poleService.pole(ctx))
+        PoleService.instance.poleRank(ctx);
     }
 }
 
@@ -27,6 +27,8 @@ const soloGrupos = (ctx: Context) => {
 }
 
 export const textMessage = (ctx: Context) => {
+    console.log("textMessage", getText(ctx));
+    
     const text = getText(ctx).toLocaleLowerCase();
     if (!ctx.message.from.is_bot) {
         switch (text) {

@@ -20,6 +20,8 @@ export const sendMessage = (ctx: Context, text: string) => {
 }
 
 export const isAdmin = (ctx: Context): boolean => {
+    console.log("isAdmin");
+    
     return ctx.from.id === +process.env.BOT_ADMIN;
 }
 

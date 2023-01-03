@@ -5,6 +5,6 @@ export class Registro {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("integer")
+    @Column("float")
     id_grupo: number;
 }

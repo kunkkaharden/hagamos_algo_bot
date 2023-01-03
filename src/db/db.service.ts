@@ -11,6 +11,8 @@ export class DBService {
   private static _instance: DBService;
   private readonly repository: Repository;
   private constructor() {
+    console.log("> DBService");
+    
     this.repository = Repository.instance;
     this.initConfig();
   }
@@ -130,7 +132,7 @@ export class DBService {
     try {
       const poleRepository = this.repository.getRepository<Pole>(Pole);
       const pole = await this.find_pole(id_grupo, id_persona);
-      pole.valor = pole.valor + 1;
+      pole.valor = +pole.valor + 1;
       await poleRepository.save(pole);
 
       return pole;
@@ -195,35 +197,47 @@ export class DBService {
 
   async update_num_pole(numero: string) {
     const num_pole = await this.find_config("num_pole")
-    num_pole.valor = numero;
-    const configRepository =  this.repository.getRepository<Config>(Config);
-    await configRepository.save(num_pole);
-    return num_pole;
+    if (num_pole) {
+      num_pole.valor = numero;
+      const configRepository =  this.repository.getRepository<Config>(Config);
+      await configRepository.save(num_pole);
+    }else {
+      this.annadir_config("num_pole", numero);
+    }
+    
   }
   async update_horario(horario: string) {
     const h = await this.find_config("horario")
-    h.valor = horario;
-    const configRepository =  this.repository.getRepository<Config>(Config);
-    await configRepository.save(h);
-    return h;
+    if (h) {
+      h.valor = horario;
+      const configRepository =  this.repository.getRepository<Config>(Config);
+      await configRepository.save(h);
+    } else {
+      this.annadir_config("horario", horario);
+    }
   }
 
   async find_config(clave: string) {
+    console.log("find_config", clave);
     const configRepository = this.repository.getRepository<Config>(Config);
-    return await configRepository.findOne({
+    const config = await configRepository.findOne({
       where: {
         clave,
       },
     });
+    console.log(config, "..");
+    return config;
   }
   async obtener_num_pole() {
     const num_pole = await this.find_config("num_pole");
+    console.log("num_pole: ", num_pole);
+    
     return num_pole.valor;
   }
 
   async obtener_horario() {
     const horario = await this.find_config("horario");
-    return horario.valor;
+    return horario ? horario.valor : "verano";
   }
 
   async tengo_persona(id_persona: number) {
@@ -241,12 +255,17 @@ export class DBService {
   }
 
   async initConfig () {
-    let tengo = this.find_config("horario")
+    console.log("init config");
+    
+    let tengo = await this.find_config("horario")
     if(!tengo) {
+        console.log("crear horario");
+        
         await this.annadir_config("horario", "verano")
     }
-    tengo = this.find_config("num_pole")
+    tengo = await this.find_config("num_pole")
     if(!tengo) {
+      console.log("crear pole")
         await this.annadir_config("num_pole", "-1")
 
     }
@@ -261,6 +280,8 @@ export class DBService {
         valor,
       });
       await configRepository.save(config);
+      console.log("create" + config);
+      
       return config;
     } catch (error) {
       console.log(error);

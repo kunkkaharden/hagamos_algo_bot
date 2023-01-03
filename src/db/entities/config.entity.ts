@@ -5,7 +5,9 @@ export class Config {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("text")
+    @Column("text", {
+        unique: true,
+    })
     clave: string;
 
     @Column("text")

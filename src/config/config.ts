@@ -5,8 +5,8 @@ export class ConfigService {
     private _horario: string; 
     private dBService: DBService;
     private constructor() {
+        console.log("> ConfigService");
         this.dBService = DBService.instance;
-        this.update();
     }
  
    public static get instance()
@@ -14,14 +14,17 @@ export class ConfigService {
          return this._instance || (this._instance = new this());
      }
      get horario () {
-        return this._horario;
+        return this._horario || "verano";
      }
 
       async invierno()  {
+         console.log("invierno");
         await this.dBService.update_horario("invierno")
         this.update();
      }
       async verano()  {
+         console.log("verano");
+         
         await this.dBService.update_horario("verano")
         this.update();
      }

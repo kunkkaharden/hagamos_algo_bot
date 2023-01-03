@@ -6,7 +6,7 @@ export class Pole {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("integer")
+    @Column("float")
     id_grupo: number;
 
     @ManyToOne(() => Persona, (persona) => persona.poles)

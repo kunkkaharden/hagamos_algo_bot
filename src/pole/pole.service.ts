@@ -1,7 +1,7 @@
 import { getHora, getIdPersona, getNombrePersona, sendMessage } from "./../utils/utils";
 import { Context } from "telegraf"
 import { ConfigService } from "./../config/config";
-import { DBService } from "src/db/db.service";
+import { DBService } from "./../db/db.service";
 /**
  * Static:
  * PoleService.instance
@@ -11,18 +11,17 @@ export class PoleService {
    private readonly configService: ConfigService;
    private readonly dBService: DBService;
    private constructor() {
+      console.log("> PoleService");
       this.configService = ConfigService.instance;
       this.dBService = DBService.instance;
    }
 
   public static get instance()
     {
-        // Do you need arguments? Make it a regular static method instead.
         return this._instance || (this._instance = new this());
     }
 
 
-//  const list = [[time(0,0),time(1,33)],[time(1,33),time(7,33)],[time(7,33),time(13,33)],[time(13,33),time(19,33)],[time(19,33),time(23,59,59,999999)]]
  async pole(ctx: Context) {
     const hora=  getHora(ctx);
     const pole = this.isPole(ctx);
@@ -34,18 +33,23 @@ export class PoleService {
     const isPole = await this.dBService.pole(ctx.message.chat.id);
     if(isPole) {
       this.dBService.analizar_persona(getIdPersona(ctx), getNombrePersona(ctx));
+      this.dBService.add_pole(ctx.message.chat.id, getIdPersona(ctx));
       sendMessage(ctx, `${getNombrePersona(ctx)} ha ganado la pole XD ` )
     } else {
       sendMessage(ctx, "Te mamaste")
     }
 
-    
-    
-    return ""
  }
 
- poleRank(): string {
-    return ""
+ async poleRank(ctx: Context) {
+   let lista = await this.dBService.puntuacion(ctx.chat.id);
+   lista = lista.sort((a, b) => a.valor - b.valor);
+   console.log(lista);
+   let respuesta ="Puntos 💜"+ "\n";
+    lista.forEach((e) => {
+      respuesta += `${e.persona.nombre_persona} --> ${e.valor}`; 
+    });
+    sendMessage(ctx, respuesta);
  }
 
    isPole(ctx: Context) {
@@ -53,19 +57,24 @@ export class PoleService {
    const hora=  getHora(ctx);
    const horario = this.configService.horario;
    let lista: string[][];
-   if(horario === "vereano") {
-      lista = [["03:33:00", "09:33:00"], ["09:33:00", "15:33:00"],  ["15:33:00", "21:33:00"], ["21:33:00", "03:33:00"]];
+   if(horario === "verano") {
+      lista = [["00:00:00", "03:33:00"], ["03:33:00", "09:33:00"],  ["09:33:00", "15:33:00"], ["15:33:00", "21:33:00"], ["21:33:00", "24:59:59"]];
    } else {
-      lista = [["04:33:00", "10:33:00"], ["10:33:00", "16:33:00"],  ["16:33:00", "22:33:00"], ["22:33:00", "04:33:00"]]
+      lista = [["00:00:00", "04:33:00"], ["04:33:00", "10:33:00"],  ["10:33:00", "16:33:00"], ["16:33:00", "22:33:00"], ["22:33:00", "24:59:59"]]
    }
  
    let i = 0;
    while (i < lista.length && pole === -1) {
+      console.log(hora >= lista[i][0] && hora < lista[i][1]);
+      console.log(hora);
+      
       if (hora >= lista[i][0] && hora < lista[i][1]) {
          pole = i
       }
       i++;
    }
+   console.log("pole: ", pole, lista);
+   pole === 4 ? 0 : pole;
    return `${pole}`
  }
 }

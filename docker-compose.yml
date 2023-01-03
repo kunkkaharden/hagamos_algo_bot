@@ -20,3 +20,4 @@ services:
       dockerfile: Dockerfile
     restart: always
 volumes:
+  postgres-data:
