@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm";
 import { Config, Persona, Pole, Registro } from "./entities"; 
-import { Repository } from "./config";
+import { Repository } from "./db.repository";
 import { DBService } from "./db.service";
 const dBInit = () => {
     console.log("> DB init");
@@ -26,6 +26,7 @@ const dBInit = () => {
 
  export const  conection = async () => {
         const ds = await dBInit().then((data) => {
+            console.log("> DB");
             Repository.getInstance(data);
             DBService.instance;
             return data;

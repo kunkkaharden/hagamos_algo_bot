@@ -27,8 +27,6 @@ const soloGrupos = (ctx: Context) => {
 }
 
 export const textMessage = (ctx: Context) => {
-    console.log("textMessage", getText(ctx));
-    
     const text = getText(ctx).toLocaleLowerCase();
     if (!ctx.message.from.is_bot) {
         switch (text) {

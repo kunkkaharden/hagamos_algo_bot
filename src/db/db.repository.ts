@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { DataSource, EntityTarget } from "typeorm";
 import { Config } from "./entities/config.entity";
 import { Persona } from "./entities/persona.entity";
 import { Pole } from "./entities/pole.entity";
@@ -23,8 +23,8 @@ export class Repository {
          return this._instance;
      }
 
-     getRepository<T>(entity: any) {
-        return this.datasource.getRepository<T>(entity);
+     getRepository<T>(target: EntityTarget <T>) {
+        return this.datasource.getRepository<T>(target);
      }
 
 

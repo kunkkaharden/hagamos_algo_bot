@@ -23,21 +23,25 @@ export class PoleService {
 
 
  async pole(ctx: Context) {
-    const hora=  getHora(ctx);
     const pole = this.isPole(ctx);
-    const num_pole = await this.dBService.obtener_num_pole();
-    if (num_pole !== pole) {
-      await this.dBService.clean_registro();
-      await this.dBService.update_num_pole(pole);
-    }
-    const isPole = await this.dBService.pole(ctx.message.chat.id);
-    if(isPole) {
-      this.dBService.analizar_persona(getIdPersona(ctx), getNombrePersona(ctx));
-      this.dBService.add_pole(ctx.message.chat.id, getIdPersona(ctx));
-      sendMessage(ctx, `${getNombrePersona(ctx)} ha ganado la pole XD ` )
+    if ( pole === '-1' ) {
+      sendMessage(ctx, "No es horario de poles...")
     } else {
-      sendMessage(ctx, "Te mamaste")
-    }
+   
+      const num_pole = await this.dBService.obtener_num_pole();
+      if (num_pole !== pole) {
+         await this.dBService.clean_registro();
+         await this.dBService.update_num_pole(pole);
+      }
+      const isPole = await this.dBService.pole(ctx.message.chat.id);
+      if(isPole) {
+         this.dBService.analizar_persona(getIdPersona(ctx), getNombrePersona(ctx));
+         this.dBService.add_pole(ctx.message.chat.id, getIdPersona(ctx));
+         sendMessage(ctx, `${getNombrePersona(ctx)} ha ganado la pole XD ` )
+      } else {
+         sendMessage(ctx, "Te mamaste")
+      }
+   }
 
  }
 
@@ -65,15 +69,11 @@ export class PoleService {
  
    let i = 0;
    while (i < lista.length && pole === -1) {
-      console.log(hora >= lista[i][0] && hora < lista[i][1]);
-      console.log(hora);
-      
       if (hora >= lista[i][0] && hora < lista[i][1]) {
          pole = i
       }
       i++;
    }
-   console.log("pole: ", pole, lista);
    pole === 4 ? 0 : pole;
    return `${pole}`
  }

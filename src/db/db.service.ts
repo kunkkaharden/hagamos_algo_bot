@@ -1,8 +1,6 @@
-import { Repository } from "./../db/config";
-import { Config } from "./entities/config.entity";
-import { Persona } from "./entities/persona.entity";
-import { Pole } from "./entities/pole.entity";
-import { Registro } from "./entities/registro.entity";
+import { Repository } from "./db.repository";
+import { Config, Persona, Pole, Registro } from "./entities";
+
 /**
  * Static:
  * PoleService.instance
@@ -132,7 +130,7 @@ export class DBService {
     try {
       const poleRepository = this.repository.getRepository<Pole>(Pole);
       const pole = await this.find_pole(id_grupo, id_persona);
-      pole.valor = +pole.valor + 1;
+      pole.valor = pole.valor + 1;
       await poleRepository.save(pole);
 
       return pole;

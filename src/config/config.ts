@@ -1,3 +1,5 @@
+import { sendMessage } from "src/utils/utils";
+import { Context } from "telegraf";
 import { DBService } from "../db/db.service";
 
 export class ConfigService {
@@ -17,19 +19,17 @@ export class ConfigService {
         return this._horario || "verano";
      }
 
-      async invierno()  {
-         console.log("invierno");
+      async invierno(ctx: Context)  {
         await this.dBService.update_horario("invierno")
-        this.update();
+        this.update(ctx);
      }
-      async verano()  {
-         console.log("verano");
-         
+      async verano(ctx: Context)  {
         await this.dBService.update_horario("verano")
-        this.update();
+        this.update(ctx);
      }
 
-     async update()  {
+     async update(ctx: Context)  {
         this._horario = await this.dBService.obtener_horario();
+        sendMessage(ctx, `Horario: ${this._horario}`)
      }
 }

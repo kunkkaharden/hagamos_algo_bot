@@ -7,6 +7,9 @@ export const getText = (ctx: any): string => {
 export const getIdPersona = (ctx: Context): number => {
     return ctx.message.from.id;
 }
+export const getIdChat = (ctx: Context): number => {
+    return ctx.message.chat.id;
+}
 export const getNombrePersona = (ctx: Context): string => {
     return ctx.message.from.first_name;
 }
@@ -16,7 +19,7 @@ export const isGroup = (ctx: Context): boolean => {
 }
 
 export const sendMessage = (ctx: Context, text: string) => {
-    ctx.telegram.sendMessage(ctx.chat.id, text);
+    ctx.telegram.sendMessage(getIdChat(ctx), text);
 }
 
 export const isAdmin = (ctx: Context): boolean => {
