@@ -4,7 +4,7 @@ import { Config, Persona, Pole, Registro } from "./entities";
 import { Repository } from "./db.repository";
 import { DBService } from "./db.service";
 import { Telegram } from "telegraf";
-import { ConfigService } from "src/config/config";
+import { ConfigService } from "./../config/config";
 const dBInit = () => {
     console.log("> DB init");
     const datasource = new DataSource({

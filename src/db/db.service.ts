@@ -222,20 +222,16 @@ export class DBService {
   }
 
   async find_config(clave: string) {
-    console.log("find_config", clave);
     const configRepository = this.repository.getRepository<Config>(Config);
     const config = await configRepository.findOne({
       where: {
         clave,
       },
     });
-    console.log(config, "..");
     return config;
   }
   async obtener_num_pole() {
     const num_pole = await this.find_config("num_pole");
-    console.log("num_pole: ", num_pole);
-    
     return num_pole.valor;
   }
 
