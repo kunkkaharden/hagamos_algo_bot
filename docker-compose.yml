@@ -13,7 +13,7 @@ services:
         - postgres-data:/var/lib/postgresql/data
   app:
     depends_on:
-      db:
+      postrges:
        condition: service_started 
     build: 
       context: .

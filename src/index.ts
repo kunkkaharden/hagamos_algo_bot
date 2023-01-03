@@ -5,6 +5,7 @@ import { Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
 import { Update } from "telegraf/typings/core/types/typegram";
 import { conection } from "./db/dbinit";
+import { send_log } from "./utils/error_log";
 dotenv.config();
 
 export const bot: Telegraf<Context<Update>> = new Telegraf(
@@ -25,7 +26,7 @@ bot.on(message("text"), (ctx: Context) => {
 //   isAdmin(ctx) && ConfigService.instance.verano(ctx);
 // });
 
-conection()
+conection(bot.telegram)
   .then(() => {
     bot.launch();
   })

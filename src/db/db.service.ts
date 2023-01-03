@@ -1,3 +1,4 @@
+import { send_log } from "src/utils/error_log";
 import { Repository } from "./db.repository";
 import { Config, Persona, Pole, Registro } from "./entities";
 
@@ -73,6 +74,7 @@ export class DBService {
       return punto;
     } catch (error) {
       console.log(error);
+      send_log(error, "annadir_persona_pole");
     }
   }
 
@@ -112,6 +114,7 @@ export class DBService {
       return persona;
     } catch (error) {
       console.log(error);
+      send_log(error, "annadir_persona");
     }
   }
   async actualizar_persona(nombre_persona: string, id_persona: number) {
@@ -123,6 +126,7 @@ export class DBService {
       return persona;
     } catch (error) {
       console.log(error);
+      send_log(error, "actualizar_persona");
     }
   }
 
@@ -136,6 +140,7 @@ export class DBService {
       return pole;
     } catch (error) {
       console.log(error);
+      send_log(error, "punto");
     }
   }
 
@@ -176,6 +181,7 @@ export class DBService {
       return registro;
     } catch (error) {
       console.log(error);
+      send_log(error, "annadir_grupo_registro");
     }
   }
   async clean_registro() {
@@ -253,17 +259,12 @@ export class DBService {
   }
 
   async initConfig () {
-    console.log("init config");
-    
     let tengo = await this.find_config("horario")
     if(!tengo) {
-        console.log("crear horario");
-        
         await this.annadir_config("horario", "verano")
     }
     tengo = await this.find_config("num_pole")
     if(!tengo) {
-      console.log("crear pole")
         await this.annadir_config("num_pole", "-1")
 
     }
@@ -278,11 +279,10 @@ export class DBService {
         valor,
       });
       await configRepository.save(config);
-      console.log("create" + config);
-      
       return config;
     } catch (error) {
       console.log(error);
+      send_log(error, "annadir_config");
     }
   }
 }

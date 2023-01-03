@@ -3,6 +3,8 @@ import { DataSource } from "typeorm";
 import { Config, Persona, Pole, Registro } from "./entities"; 
 import { Repository } from "./db.repository";
 import { DBService } from "./db.service";
+import { Telegram } from "telegraf";
+import { ConfigService } from "src/config/config";
 const dBInit = () => {
     console.log("> DB init");
     const datasource = new DataSource({
@@ -24,11 +26,12 @@ const dBInit = () => {
              
  }
 
- export const  conection = async () => {
+ export const  conection = async (telegraf: Telegram) => {
         const ds = await dBInit().then((data) => {
             console.log("> DB");
             Repository.getInstance(data);
             DBService.instance;
+            ConfigService.getInstance(telegraf);
             return data;
         });
  }
