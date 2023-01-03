@@ -1,7 +1,6 @@
 import * as dotenv from "dotenv";
-import { ConfigService } from "./config/config";
 import { textMessage } from "./pole/pole";
-import { getNombrePersona, isAdmin } from "./utils/utils";
+import { getNombrePersona } from "./utils/utils";
 import { Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
 import { Update } from "telegraf/typings/core/types/typegram";
@@ -19,12 +18,12 @@ bot.on(message("text"), (ctx: Context) => {
   textMessage(ctx);
 });
 
-bot.command("invierno", (ctx: Context) => {
-  isAdmin(ctx) && ConfigService.instance.invierno(ctx);
-});
-bot.command("verano", (ctx: Context) => {
-  isAdmin(ctx) && ConfigService.instance.verano(ctx);
-});
+// bot.command("invierno", (ctx: Context) => {
+//   isAdmin(ctx) && ConfigService.instance.invierno(ctx);
+// });
+// bot.command("verano", (ctx: Context) => {
+//   isAdmin(ctx) && ConfigService.instance.verano(ctx);
+// });
 
 conection()
   .then(() => {

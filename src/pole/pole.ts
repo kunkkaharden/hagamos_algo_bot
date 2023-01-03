@@ -1,6 +1,7 @@
-import { getText, isGroup, sendMessage } from "./../utils/utils";
+import { getText, isAdmin, isGroup, sendMessage } from "./../utils/utils";
 import { Context } from "telegraf";
 import { PoleService } from "./pole.service";
+import { ConfigService } from "./../config/config";
 
 const pole = (ctx: Context) => {
     if (!isGroup(ctx)) {
@@ -39,7 +40,13 @@ export const textMessage = (ctx: Context) => {
             case "!polerank":
                 poleRank(ctx)
                 break;
+            case "/invierno": 
+                isAdmin(ctx) && ConfigService.instance.invierno(ctx);
+                break;
         
+            case "/verano": 
+                isAdmin(ctx) && ConfigService.instance.verano(ctx);
+                break;
         }
     }
 }

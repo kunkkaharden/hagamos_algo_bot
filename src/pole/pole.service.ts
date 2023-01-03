@@ -35,8 +35,8 @@ export class PoleService {
       }
       const isPole = await this.dBService.pole(ctx.message.chat.id);
       if(isPole) {
-         this.dBService.analizar_persona(getIdPersona(ctx), getNombrePersona(ctx));
-         this.dBService.add_pole(ctx.message.chat.id, getIdPersona(ctx));
+         await this.dBService.analizar_persona(getIdPersona(ctx), getNombrePersona(ctx));
+         await this.dBService.add_pole(ctx.message.chat.id, getIdPersona(ctx));
          sendMessage(ctx, `${getNombrePersona(ctx)} ha ganado la pole XD ` )
       } else {
          sendMessage(ctx, "Te mamaste")

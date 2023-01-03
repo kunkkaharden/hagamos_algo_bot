@@ -1,4 +1,4 @@
-import { sendMessage } from "src/utils/utils";
+import { sendMessage } from "./../utils/utils";
 import { Context } from "telegraf";
 import { DBService } from "../db/db.service";
 
