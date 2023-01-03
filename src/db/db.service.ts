@@ -14,6 +14,7 @@ export class DBService {
     
     this.repository = Repository.instance;
     this.initConfig();
+    send_log({}, "constructor");
   }
 
   public static get instance() {

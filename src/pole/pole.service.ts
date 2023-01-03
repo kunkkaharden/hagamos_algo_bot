@@ -48,9 +48,10 @@ export class PoleService {
  async poleRank(ctx: Context) {
    let lista = await this.dBService.puntuacion(ctx.chat.id);
    lista = lista.sort((a, b) => a.valor - b.valor);
-   let respuesta ="Puntos 💜"+ "\n";
+   console.log("lista: ", lista);
+   let respuesta ="Puntos 💜  \n";
     lista.forEach((e) => {
-      respuesta += `${e.persona.nombre_persona} --> ${e.valor}`; 
+      respuesta += `${e.persona?.nombre_persona} --> ${e.valor} \n`; 
     });
     sendMessage(ctx, respuesta);
  }
