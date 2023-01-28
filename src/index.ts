@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { deleteBotCommand, getNombrePersona, isAdmin, isReply, responder } from './utils/utils';
+import { deleteBotCommand, getNombrePersona, isAdmin, isPost, isReply, responder } from './utils/utils';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { add, deletePost } from './services/registro';
@@ -14,17 +14,17 @@ bot.start((ctx: Context) => {
 });
 
 bot.command('add', (ctx: Context) => {
-  isReply(ctx) && isAdmin(ctx) && add(ctx, false);
+  isPost(ctx) && isAdmin(ctx) && add(ctx, false);
   deleteBotCommand(ctx);
 });
 
 bot.command("addtemp", (ctx: Context) => {
-  isReply(ctx) && isAdmin(ctx) && add(ctx, true);
+  isPost(ctx) && isAdmin(ctx) && add(ctx, true);
   deleteBotCommand(ctx);
 });
 
 bot.command("delete", (ctx: Context) => {
-  isReply(ctx) && isAdmin(ctx) && deletePost(ctx);
+  isPost(ctx) && isAdmin(ctx) && deletePost(ctx);
   deleteBotCommand(ctx);
 });
 

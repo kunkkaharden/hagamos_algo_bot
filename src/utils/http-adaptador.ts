@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as dotenv from 'dotenv';
+dotenv.config();
 export const BASE_URL = process.env.BASE_URL;
 const authHeader = () => {
   const token = process.env.BACK_TOKEN;
@@ -9,9 +11,6 @@ const authHeader = () => {
   }
 }
 
-export function bearerHeader(token) {
-  return 'Bearer ' + token;
-}
 
 const instance = axios.create();
 instance.interceptors.request.use((config) => {

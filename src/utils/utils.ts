@@ -31,8 +31,8 @@ export const deleteBotCommand = (ctx: Context ) => {
 }
 
 
-export const deleteMessage = (ctx: Context ) => {
-    ctx.telegram.deleteMessage(getIdChat(ctx), getIdReply(ctx));
+export const deleteMessage = async(ctx: Context ) => {
+    await ctx.telegram.deleteMessage(getIdChat(ctx), getIdReply(ctx));
 }
 
 export const getIdPersona = (ctx: Context): number => {
@@ -55,17 +55,24 @@ export const isReply = (ctx: any): boolean => {
     return !!ctx.message.reply_to_message;
 }
 
+export const isValidPost = (ctx: any): boolean => {
+    return !!ctx.message.reply_to_message.caption && !!ctx.message.reply_to_message.photo;
+}
+export const isPost = (ctx: Context) => {
+    return isReply(ctx) && isValidPost(ctx);
+}
 export const sendMessage = (ctx: Context, text: string) => {
     ctx.telegram.sendMessage(getIdChat(ctx), text);
 }
 
 export const responder = async(ctx: Context, text: string) => {
     const options: {message_thread_id?: number, reply_to_message_id?: number} = {};
-    options.message_thread_id = ctx.message.message_thread_id;
+    ctx.message.is_topic_message && (options.message_thread_id = ctx.message.message_thread_id);
     options.reply_to_message_id = getIdReply(ctx);
     const info = await ctx.telegram.sendMessage(getIdChat(ctx), text, options);
     deleteBotMessage(ctx, info);
 }
+
 
 export const isAdmin = (ctx: Context): boolean => {
     const admins: number[] = JSON.parse(process.env.BOT_ADMIN);

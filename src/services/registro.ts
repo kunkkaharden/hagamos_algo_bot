@@ -22,15 +22,15 @@ export const add = async(ctx: Context, temporal: boolean) => {
         responder(ctx, `Ver logs...`);
         sendLog(ctx, error)
     }
-    
-    // responder(ctx, 'hola');
 }
 
 
 export const deletePost = async(ctx: Context) => {
     try {
-        await axios.delete(BASE_URL + `registro?enlace=${''}`);
-        deleteMessage(ctx);
+        await axios.post(BASE_URL + `registro/delete`, {
+            enlace: getEnlace(ctx),
+        });
+        await deleteMessage(ctx);
     } catch (error) {
         console.log(error);
         responder(ctx, `Ver logs...`);
