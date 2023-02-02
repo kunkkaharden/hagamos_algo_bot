@@ -24,7 +24,7 @@ bot.command("addtemp", (ctx: Context) => {
 });
 
 bot.command("delete", (ctx: Context) => {
-  isPost(ctx) && isAdmin(ctx) && deletePost(ctx);
+  isAdmin(ctx) && deletePost(ctx);
   deleteBotCommand(ctx);
 });
 

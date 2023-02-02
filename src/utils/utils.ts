@@ -61,8 +61,11 @@ export const isValidPost = (ctx: any): boolean => {
 export const isPost = (ctx: Context) => {
     return isReply(ctx) && isValidPost(ctx);
 }
-export const sendMessage = (ctx: Context, text: string) => {
-    ctx.telegram.sendMessage(getIdChat(ctx), text);
+export const sendMessage = async(ctx: Context, text: string) => {
+    const options: {message_thread_id?: number, reply_to_message_id?: number} = {};
+    ctx.message.is_topic_message && (options.message_thread_id = ctx.message.message_thread_id);
+    const info = await ctx.telegram.sendMessage(getIdChat(ctx), text, options);
+    deleteBotMessage(ctx, info);
 }
 
 export const responder = async(ctx: Context, text: string) => {
@@ -90,3 +93,10 @@ export const getHora = (ctx: Context): string => {
 export const sendLog = (ctx: Context, info: any) => {
     ctx.telegram.sendMessage(process.env.ADMIN, JSON.stringify(info));
 } 
+
+export const getArgumento = (ctx: Context): string => {
+    const text = getText(ctx);
+    const splited  = text.split(' ');
+    splited.shift();
+    return splited.join(' ');
+}

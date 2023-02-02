@@ -3,4 +3,5 @@ export enum Categorias {
  perdido = 'PERDIDO',
  curiosidades = 'CURIOSIDADES',
  cuidados = 'CUIDADOS',
+ adopcion = 'ADOPCION',
 }
